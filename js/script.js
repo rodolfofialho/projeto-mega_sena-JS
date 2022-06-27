@@ -3,10 +3,35 @@ const btnApostar = document.getElementById("btnApostar");
 btnApostar.disabled = true;
 let valorAposta =  0;
 const resultado = [];
+let qtdAcertos = 0;
 
-sorteaNumeros();
+sortearNumeros();
 
-function sorteaNumeros() {
+const themeToggle = document.querySelector(
+    '.switch input[type="checkbox"]'
+);
+
+function switchTheme(e) {
+    if (e.target.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+        document.documentElement.setAttribute("data-theme", "light");
+    }
+}
+themeToggle.addEventListener("change", switchTheme, false);
+
+const currentTheme = localStorage.getItem("theme");
+if (currentTheme) {
+    document.documentElement.setAttribute("data-theme", currentTheme);
+
+    if (currentTheme === "dark") {
+        themeToggle.checked = true;
+    }
+}
+
+function sortearNumeros() {
+
+    // Sorteando os numeros do jogo
     for(i = 0; i < 6; i++) {
         let numeroSorteado = Math.round(Math.random() * 59 + 1);
 
@@ -100,3 +125,49 @@ function valorDaAposta () {
 
 }
 
+function apostar() {
+    // fazer a aposta - comparar os numeros sorteados com os apostados
+    for (i = 0; i < numerosApostados.length; i++) {
+        if(resultado.includes(numerosApostados[i])) {
+            qtdAcertos++;
+        } 
+    }
+    // mostrar o resulatado
+    const divResultado = document.getElementById('resultado');
+    for (i = 0; i < resultado.length; i++) {
+        divResultado.innerHTML += "<div class='resultadoCircle'>" + resultado[i] +"</div>";
+    }
+
+    //mostrar a qtd de acertos
+    let divAcertos = document.getElementById('acertos');
+    divAcertos.innerHTML = "<p>Acertos<p/><P class='valor'>" + qtdAcertos + "</p>"
+
+    // Desabilitar todos os botões
+    desabilitarTodosNumeros();
+
+    //habilitar o botõ reiniciar
+    document.getElementById('btnReiniciar').style.display = 'inline';
+}   
+function desabilitarTodosNumeros() {
+    for(i = 1; i <= 60; i++){
+        document.getElementById('num_' + i).disabled = true;
+        document.getElementById('btnApostar').disabled = true;
+    }
+}
+
+let btn = document.querySelector("#btnReiniciar");
+btn.addEventListener('click', () => {
+    location.reload();
+});
+
+function switchTheme(e) {
+    if (e.target.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+    } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+    }   
+}
+
+    

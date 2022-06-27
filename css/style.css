@@ -130,7 +130,7 @@ footer #valor{
 
 footer #acertos{
     border-left: 1px solid #008000;
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 @media(max-width:390px){
